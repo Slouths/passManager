@@ -6,8 +6,18 @@ def generate_password(length, numbers = True, special = True):
     characters = string.ascii_letters
     digits = string.digits
     special = string.punctuation
+    
+    password = ""
+    while len(password) < length:
 
-    return special
+        password += characters
+
+        if numbers:
+            password += characters
+        elif special:
+            password += special
+
+    return password
 
 #Asks the user if they want to replay the password program
 def replay():
@@ -28,26 +38,26 @@ while True:
         length = int(input("How many characters do you want your password to be? "))
 
     #Gets number option
-    nums = input("Do you want your password to include numbers? Y/N ").lower()
+    nums = input("Do you want your password to include numbers? Y/N ").lower().strip()
 
-    if nums == ["y", "yes", "ye"]:
+    if nums in ["y", "yes", "ye"]:
         nums = True
-    elif nums == ["n", "no", "nah"]:
+    elif nums in ["n", "no", "nah"]:
         nums = False
     else:
         print("Please enter a valid letter (Y / N)")
-        nums = input("Do you want your password to include numbers? ").lower()
+        nums = input("Do you want your password to include numbers? ").lower().strip()
     
     #Gets special character option
-    special = input("Do you want your password to include special characters? Y/N ").lower()
+    special = input("Do you want your password to include special characters? Y/N ").lower().strip()
 
-    if nums == ["y", "yes", "ye"]:
-        nums = True
-    elif nums == ["n", "no", "nah"]:
-        nums = False
+    if special in ["y", "yes", "ye"]:
+        special = True
+    elif special in ["n", "no", "nah"]:
+        special = False
     else:
         print("Please enter a valid letter (Y / N)")
-        special = input("Do you want your password to include special characters? ").lower()
+        special = input("Do you want your password to include special characters? ").lower().strip()
 
     #Prints out the password
     print(generate_password(length, nums, special))
