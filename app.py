@@ -1,85 +1,40 @@
 import random
 import string
-
-
-#Turns Char string into list
-def listChars(charString):
-    char = []
-    for i in range(len(charString)):
-        char.append(str(i))
-    return char
+import streamlit as st
 
 
 #Function that generates a password based on the parameters.
-def generate_password(length, numbers = True, special = True):
+def generate_password(length, numbers=False, special=False):
 
-    characters = listChars(string.ascii_letters)
-    digits = listChars(string.digits)
-    special = listChars(string.punctuation)
-    
-    password = ""
+    characters = list(string.ascii_letters)
+    digits = list(string.digits)
+    special_chars = list(string.punctuation)
 
-    while len(password) < length:
+    if not numbers and not special:
+        # If the user doesn't want numbers or special characters, use only letters
+        available_chars = characters
+    elif numbers and special:
+        # If the user wants both numbers and special characters
+        available_chars = characters + digits + special_chars
+    elif numbers:
+        # If the user wants only numbers
+        available_chars = characters + digits
+    else:
+        # If the user wants only special characters
+        available_chars = characters + special_chars
 
-        password += random.choice(digits)
-
-        if numbers:
-            password += random.choice(digits)
-        elif special:
-            password += random.choice(special)
+    password = "".join(random.choice(available_chars) for _ in range(length))
 
     return password
 
-#Asks the user if they want to replay the password program
-def replay():
-    run = input("Do you want to run the program again? ")
-    if run == ["y", "yes"]:
-        return True
-    return False
+    # Streamlit app
+st.title("Random Password Generator")
 
-#Main runs until user does not want to generate anymore passwords
-while True:
-    print("Welcome to your password generator!")
+length = st.slider("Select password length", 6, 20, 8)  # Change the range as needed
+include_numbers = st.checkbox("Include numbers")
+include_special_chars = st.checkbox("Include special characters")
 
-    #Tries to turn length into an int, if it cant then the user is prompted again
-    try:
-        length = int(input("How many characters do you want your password to be? "))
-    except Exception:
-        print("Please enter a valid length")
-        length = int(input("How many characters do you want your password to be? "))
-
-    #Gets number option
-    nums = input("Do you want your password to include numbers? Y/N ").lower().strip()
-
-    if nums in ["y", "yes", "ye"]:
-        nums = True
-    elif nums in ["n", "no", "nah"]:
-        nums = False
-    else:
-        print("Please enter a valid letter (Y / N)")
-        nums = input("Do you want your password to include numbers? ").lower().strip()
-    
-    #Gets special character option
-    special = input("Do you want your password to include special characters? Y/N ").lower().strip()
-
-    if special in ["y", "yes", "ye"]:
-        special = True
-    elif special in ["n", "no", "nah"]:
-        special = False
-    else:
-        print("Please enter a valid letter (Y / N)")
-        special = input("Do you want your password to include special characters? ").lower().strip()
-
-    #Prints out the password
-    print(generate_password(length, nums, special))
-
-    #Checks if user wants to generate another password
-    if replay():
-        continue
-    else:
-        break
-    
-    
-    
-    
+if st.button("Generate Password"):
+    password = generate_password(length, include_numbers, include_special_chars)
+    st.write("Generated Password:", password)
 
