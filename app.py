@@ -1,21 +1,32 @@
 import random
 import string
 
+
+#Turns Char string into list
+def listChars(charString):
+    char = []
+    for i in range(len(charString)):
+        char.append(str(i))
+    return char
+
+
 #Function that generates a password based on the parameters.
 def generate_password(length, numbers = True, special = True):
-    characters = string.ascii_letters
-    digits = string.digits
-    special = string.punctuation
+
+    characters = listChars(string.ascii_letters)
+    digits = listChars(string.digits)
+    special = listChars(string.punctuation)
     
     password = ""
+
     while len(password) < length:
 
-        password += characters
+        password += random.choice(digits)
 
         if numbers:
-            password += characters
+            password += random.choice(digits)
         elif special:
-            password += special
+            password += random.choice(special)
 
     return password
 
