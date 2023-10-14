@@ -2,6 +2,7 @@ import random
 import string
 import streamlit as st
 
+#MAKE PASSWORD RANDOM PASSWORD
 
 #Function that generates a password based on the parameters.
 def generate_password(length, numbers=False, special=False):
